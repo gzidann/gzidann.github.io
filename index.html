@@ -12,6 +12,8 @@
 	<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
 		integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
 		crossorigin=""></script>
+	<script src="https://cdn.tailwindcss.com"></script>
+
 	<style>
 		body {
 			margin: 0;
@@ -38,14 +40,16 @@
 </head>
 
 <body>
-	Peta:
-	<select id="pilihan">
-		<option value="-" disabled selected>Pilih peta</option>
-		<option value="0">case 1 - 2bit</option>
-		<option value="1">case 2 - 3bit</option>
-		<option value="2">case 3- 4bit</option>
-		<option value="3">case 4 - 5bit</option>
-	</select>
+	<div class="p-4 container mx-auto">
+		Citra:
+		<select id="pilihan" class="border shadow rounded">
+			<option value="-" disabled selected>Pilih Citra</option>
+			<option value="0">case 1 - 2bit</option>
+			<option value="1">case 2 - 3bit</option>
+			<option value="2">case 3- 4bit</option>
+			<option value="3">case 4 - 5bit</option>
+		</select>
+	</div>
 	<div id="wadah">
 		<div class="peta" id="p0"></div>
 		<div class="peta" id="p1"></div>
@@ -71,7 +75,7 @@
 				crs: L.CRS.Simple,
 				minZoom: -2,
 				maxZoom: 4,
-				layers: [citraCompanding, citraRekonstruksi]
+				layers: [citraAsli, citraCompanding, citraRekonstruksi]
 			}).setView([750, 750], 0);
 
 			var setelanLapisan = L.control.layers().addTo(petaL);
