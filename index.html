@@ -1,78 +1,90 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Demo Program | Peta untuk Tugas Akhir (2022)</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
-	<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+		integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+		crossorigin="" />
+	<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+		integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+		crossorigin=""></script>
 	<style>
-body { margin: 0; border: none; padding: 0; }
-#pilihan { height: 24px; width: 50%; }
-#wadah { height: calc(100vh - 24px); width: 100%; }
-.peta { height: 100%; width: 100%; display: none; }
+		body {
+			margin: 0;
+			border: none;
+			padding: 0;
+		}
+
+		#pilihan {
+			height: 24px;
+			width: 50%;
+		}
+
+		#wadah {
+			height: calc(100vh - 24px);
+			width: 100%;
+		}
+
+		.peta {
+			height: 100%;
+			width: 100%;
+			display: none;
+		}
 	</style>
 </head>
+
 <body>
 	Peta:
 	<select id="pilihan">
 		<option value="-" disabled selected>Pilih peta</option>
-		<option value="0">22828930_15 (0) [5,61 MB]</option>
-		<option value="1">22828990_15 (1) [5,06 MB]</option>
-		<option value="2">22829050_15 (2) [5,07 MB]</option>
-		<option value="3">23429020_15 (3) [5,10 MB]</option>
-		<option value="4">23429080_15 (4) [5,27 MB]</option>
-		<option value="5">23578960_15 (5) [5,50 MB]</option>
-		<option value="6">23579005_15 (6) [5,08 MB]</option>
-		<option value="7">23729035_15 (7) [4,43 MB]</option>
-		<option value="8">23879080_15 (8) [5,29 MB]</option>
-		<option value="9">24179065_15 (9) [5,03 MB]</option>
+		<option value="0">case 1 - 2bit</option>
+		<option value="1">case 2 - 3bit</option>
+		<option value="2">case 3- 4bit</option>
+		<option value="3">case 4 - 5bit</option>
 	</select>
 	<div id="wadah">
 		<div class="peta" id="p0"></div>
 		<div class="peta" id="p1"></div>
 		<div class="peta" id="p2"></div>
 		<div class="peta" id="p3"></div>
-		<div class="peta" id="p4"></div>
-		<div class="peta" id="p5"></div>
-		<div class="peta" id="p6"></div>
-		<div class="peta" id="p7"></div>
-		<div class="peta" id="p8"></div>
-		<div class="peta" id="p9"></div>
 	</div>
 	<script>
-var sudahDisiapkan = {};
+		var sudahDisiapkan = {};
 
-function siapkanPeta(indeks) {
-	for (var k = 0; k < 10; k ++) {
-		document.getElementById("p" + k).style.display = "none";
-	}
-	document.getElementById("p" + indeks).style.display = "block";
-	if (sudahDisiapkan[indeks] === true) {
-		return;
-	}
-	var citraSatlt = L.imageOverlay("data/" + indeks + "a.png", [[0, 0], [1500, 1500]], {attribution: "Mnih, V. (2013)"});
-	var citraHasil = L.imageOverlay("data/" + indeks + "b.png", [[0, 0], [1500, 1500]], {attribution: "Susanto, M.R.P. (2022)", opacity: 0.5});
-	var citraBatas = L.imageOverlay("data/" + indeks + "c.png", [[0, 0], [1500, 1500]], {attribution: "Susanto, M.R.P. (2022)"});
+		function siapkanPeta(indeks) {
+			for (var k = 0; k < 4; k++) {
+				document.getElementById("p" + k).style.display = "none";
+			}
+			document.getElementById("p" + indeks).style.display = "block";
+			if (sudahDisiapkan[indeks] === true) {
+				return;
+			}
+			var citraAsli = L.imageOverlay("data/" + indeks + "a.png", [[0, 0], [1500, 1500]]);
+			var citraCompanding = L.imageOverlay("data/" + indeks + "b.png", [[0, 0], [1500, 1500]]);
+			var citraRekonstruksi = L.imageOverlay("data/" + indeks + "c.png", [[0, 0], [1500, 1500]]);
 
-	var petaL = L.map("p" + indeks, {
-		crs: L.CRS.Simple,
-		minZoom: -2,
-		maxZoom: 4,
-		layers: [citraSatlt, citraHasil]
-	}).setView([750, 750], 0);
+			var petaL = L.map("p" + indeks, {
+				crs: L.CRS.Simple,
+				minZoom: -2,
+				maxZoom: 4,
+				layers: [citraCompanding, citraRekonstruksi]
+			}).setView([750, 750], 0);
 
-	var setelanLapisan = L.control.layers().addTo(petaL);
-	setelanLapisan.addOverlay(citraHasil, "Hasil Deteksi (Daerah)");
-	setelanLapisan.addOverlay(citraBatas, "Hasil Deteksi (Batas)");
+			var setelanLapisan = L.control.layers().addTo(petaL);
+			setelanLapisan.addOverlay(citraCompanding, "Hasil Companding");
+			setelanLapisan.addOverlay(citraRekonstruksi, "Hasil Rekonstruksi");
 
-	sudahDisiapkan[indeks] = true;
-}
+			sudahDisiapkan[indeks] = true;
+		}
 
-pilihan.addEventListener("change", function() {
-	siapkanPeta(pilihan.value);
-});
+		pilihan.addEventListener("change", function () {
+			siapkanPeta(pilihan.value);
+		});
 	</script>
 </body>
+
 </html>
